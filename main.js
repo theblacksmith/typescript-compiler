@@ -1,14 +1,15 @@
 (function() {
     var fs = require('fs');
+    var path = require('path');
     var _ = require('underscore');
 
-    var tsDir = __dirname + '/node_modules/typescript/';
-    var tsBinDir = tsDir + 'bin/';
-    var version = JSON.parse(fs.readFileSync(tsDir + 'package.json')).version;
-    var targetFile = __dirname + '/tsc-generated-' + version + '.tmp';
+    var tsDir = path.join(__dirname, '/node_modules/typescript/');
+    var tsBinDir = path.join(tsDir, 'bin');
+    var version = JSON.parse(fs.readFileSync(path.join(tsDir, 'package.json'))).version;
+    var targetFile = path.join(__dirname, '/tsc-' + version + '-wrapped.tmp');
 
-    if (!fs.existsSync(targetFile)) {       
-        var srcFile = tsBinDir + 'tsc.js';
+    if (!fs.existsSync(targetFile)) {
+        var srcFile = path.join(tsBinDir, 'tsc.js');
         var tscSource = fs.readFileSync(srcFile, 'utf8');
 
         // Remove all the "executable" lines at the end of the file
@@ -38,18 +39,19 @@
     }
     
     module.exports = require(targetFile);
-    module.exports._libdPath = tsBinDir + 'lib.d.ts';
+    module.exports.libdPath = path.join(tsBinDir, 'lib.d.ts');
 
     var IO = module.exports.IO;
     var BatchCompiler = module.exports.BatchCompiler;
 
     module.exports.compile = function (files, tscArgs, onError) {
-        var newArgs = tscArgs.slice(0);
-        var noLib = '--nolib';
-        if (tscArgs.indexOf(noLib) < 0) {
-            newArgs.push(noLib);
-            newArgs.push(module.exports._libdPath);
-        }
+        var newArgs;
+
+        if(typeof tscArgs == "string")
+            newArgs = tscArgs.split(' ');
+        else
+        	newArgs = tscArgs || [];
+
         newArgs = newArgs.concat(files);
 
         var io = _.extend({}, IO, { arguments: newArgs });
@@ -64,14 +66,14 @@
             function wrapWithCallback(fn, includesNewline) {
                 var original = fn;
                 return function (str) {
-                    if (onError(str, includesNewline) !== false) {
+                    if (onError(str) !== false) {
                         original(str);
                     }
                 };
             }
 
-            io.stderr.Write = wrapWithCallback(io.stderr.Write, false);
-            io.stderr.WriteLine = wrapWithCallback(io.stderr.WriteLine, true);
+            io.stderr.Write = wrapWithCallback(io.stderr.Write);
+            io.stderr.WriteLine = wrapWithCallback(io.stderr.WriteLine);
         }
 
         new BatchCompiler(io).batchCompile();

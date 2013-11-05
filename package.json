@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/theblacksmith/typescript-compiler",
   "dependencies": {
-    "typescript": "~0.8",
+    "typescript": "~0.9.1-1",
     "underscore": "~1"
   },
-  "readmeFilename": "README.md",
+  "readmeFilename": "README.md"
 }
