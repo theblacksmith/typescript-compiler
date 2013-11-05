@@ -1,0 +1,30 @@
+{
+  "name": "typescript-compiler",
+  "version": "0.9.1-1",
+  "description": "Typescript compiler wrapper",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theblacksmith/typescript-compiler.git"
+  },
+  "keywords": [
+    "TypeScript",
+    "compiler",
+    "language",
+    "javascript"
+  ],
+  "author": "The Blacksmith (a.k.a. Saulo Vallory)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theblacksmith/typescript-compiler/issues"
+  },
+  "homepage": "https://github.com/theblacksmith/typescript-compiler",
+  "dependencies": {
+    "typescript": "~0.8",
+    "underscore": "~1"
+  },
+  "readmeFilename": "README.md",
+}
