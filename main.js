@@ -2,7 +2,7 @@
     var fs = require('fs');
     var path = require('path');
     var _ = require('underscore');
-
+    
     var tsDir = path.join(__dirname, '/node_modules/typescript/');
     var tsBinDir = path.join(tsDir, 'bin');
     var version = JSON.parse(fs.readFileSync(path.join(tsDir, 'package.json'))).version;
@@ -32,7 +32,7 @@
         // compiler
         content += 'module.exports = TypeScript;\n\n';
         content += 'module.exports.IO = IO;\n\n';   
-        content += 'module.exports.BatchCompiler = BatchCompiler;\n\n';   
+        content += 'module.exports.BatchCompiler = TypeScript.BatchCompiler;\n\n';   
         content += '})();\n';
         
         fs.writeFileSync(targetFile, content, 'utf8');
@@ -46,11 +46,17 @@
 
     module.exports.compile = function (files, tscArgs, onError) {
         var newArgs;
+        var noLib = '--noLib';
 
         if(typeof tscArgs == "string")
             newArgs = tscArgs.split(' ');
         else
         	newArgs = tscArgs || [];
+        
+        if (newArgs.indexOf(noLib) < 0) {
+            newArgs.push(noLib);
+            newArgs.push(module.exports.libdPath);
+        }
 
         newArgs = newArgs.concat(files);
 
