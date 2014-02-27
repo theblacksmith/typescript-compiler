@@ -1,6 +1,6 @@
 {
   "name": "typescript-compiler",
-  "version": "0.9.1-1.2",
+  "version": "0.9.7",
   "description": "Typescript compiler wrapper",
   "main": "main.js",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/theblacksmith/typescript-compiler",
   "dependencies": {
-    "typescript": "=0.9.1-1",
+    "typescript": ">=0.9.7",
     "underscore": "~1"
   },
   "readmeFilename": "README.md"

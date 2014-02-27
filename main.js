@@ -17,10 +17,22 @@
         //     batchCompiler.batchCompile();
         var lines = tscSource.split(/[\n\r]+/);
         var i = lines.length - 1;
-        while (lines[i].indexOf('}') !== 0) {
+
+        while (lines[i].indexOf('}') >= 0) {
             i--;
         }
+
+        // commenting call to batch.batchCompile()
+        // limiting the search to the last 10 lines
+        for(var j = 1; j <= 10; j++) {
+            if(lines[lines.length - j].indexOf('batch') >= 0) {
+                lines[lines.length - j] = '//'+lines[lines.length - j];
+            }
+        }
+
         var tscSourceWithoutLastLines = lines.slice(0, i + 1).join('\n');
+
+
         
         // Create a new file, wrapping the original in a closure
         var content = "(function() { \n";
@@ -31,7 +43,7 @@
         // IO and BatchCompiler to expose the command line
         // compiler
         content += 'module.exports = TypeScript;\n\n';
-        content += 'module.exports.IO = IO;\n\n';   
+        content += 'module.exports.IO = TypeScript.IO;\n\n';   
         content += 'module.exports.BatchCompiler = TypeScript.BatchCompiler;\n\n';   
         content += '})();\n';
         
@@ -54,9 +66,13 @@
         	newArgs = tscArgs || [];
         
         if (newArgs.indexOf(noLib) < 0) {
-            newArgs.push(noLib);
             newArgs.push(module.exports.libdPath);
         }
+        else
+            newArgs.push(noLib);
+
+        if(!(typeof files == "array"))
+            files = [files];
 
         newArgs = newArgs.concat(files);
 
