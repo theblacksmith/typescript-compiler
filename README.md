@@ -12,7 +12,7 @@ Require the compiler...
 
 call it! 
 
-    compile(['a.ts', 'b.ts'], ['--out', 'out.js'])
+    tsc.compile(['a.ts', 'b.ts'], ['--out', 'out.js'])
 
 ## Module Interface
 
