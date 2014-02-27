@@ -31,8 +31,6 @@
         }
 
         var tscSourceWithoutLastLines = lines.slice(0, i + 1).join('\n');
-
-
         
         // Create a new file, wrapping the original in a closure
         var content = "(function() { \n";
@@ -71,7 +69,7 @@
         else
             newArgs.push(noLib);
 
-        if(!(typeof files == "array"))
+        if(!(files instanceof Array))
             files = [files];
 
         newArgs = newArgs.concat(files);
