@@ -69,7 +69,7 @@
         else
             newArgs.push(noLib);
 
-        if(!(files instanceof Array))
+        if(!_.isArray(files))
             files = [files];
 
         newArgs = newArgs.concat(files);
