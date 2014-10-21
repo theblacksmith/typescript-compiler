@@ -2,7 +2,7 @@
     var fs = require('fs');
     var path = require('path');
     var _ = require('underscore');
-    
+
     var tsDir = path.join(__dirname, '/node_modules/typescript/');
     var tsBinDir = path.join(tsDir, 'bin');
     var version = JSON.parse(fs.readFileSync(path.join(tsDir, 'package.json'))).version;
@@ -25,44 +25,48 @@
         // commenting call to batch.batchCompile()
         // limiting the search to the last 10 lines
         for(var j = 1; j <= 10; j++) {
-            if(lines[lines.length - j].indexOf('batch') >= 0) {
+            if(lines[lines.length - j].indexOf('batch') >= 0
+              || lines[lines.length - j].indexOf('ts.executeCommandLine') >= 0) {
                 lines[lines.length - j] = '//'+lines[lines.length - j];
             }
         }
 
         var tscSourceWithoutLastLines = lines.slice(0, i + 1).join('\n');
-        
+
         // Create a new file, wrapping the original in a closure
         var content = "(function() { \n";
         content += tscSourceWithoutLastLines;
-        content += "\n\n";
+        content += "\n";
 
-        // Export the base TypeScript module and 
+        // Export the base TypeScript module and
         // IO and BatchCompiler to expose the command line
         // compiler
-        content += 'module.exports = TypeScript;\n\n';
-        content += 'module.exports.IO = TypeScript.IO;\n\n';   
-        content += 'module.exports.BatchCompiler = TypeScript.BatchCompiler;\n\n';   
+        content += 'module.exports.ts = ts;\n';
+        content += 'module.exports.sys = sys;\n';
+        //content += 'module.exports.IO = TypeScript.IO;\n\n';
+        //content += 'module.exports.BatchCompiler = TypeScript.BatchCompiler;\n\n';
         content += '})();\n';
-        
+
         fs.writeFileSync(targetFile, content, 'utf8');
     }
-    
-    module.exports = require(targetFile);
+
+    var tsc = require(targetFile);
+
+    module.exports.ts = tsc.ts;
+    module.exports.sys = tsc.sys;
     module.exports.libdPath = path.join(tsBinDir, 'lib.d.ts');
 
-    var IO = module.exports.IO;
-    var BatchCompiler = module.exports.BatchCompiler;
+    tsc.sys.exit = function(code) { return code; };
 
-    module.exports.compile = function (files, tscArgs, onError) {
+    module.exports.compile = function (files, tscArgs) {
         var newArgs;
         var noLib = '--noLib';
 
         if(typeof tscArgs == "string")
             newArgs = tscArgs.split(' ');
         else
-        	newArgs = tscArgs || [];
-        
+          newArgs = tscArgs || [];
+
         if (newArgs.indexOf(noLib) < 0) {
             newArgs.push(module.exports.libdPath);
         }
@@ -74,29 +78,6 @@
 
         newArgs = newArgs.concat(files);
 
-        var io = _.extend({}, IO, { arguments: newArgs });
-
-        var exitCode;
-        
-        io.quit = function(code) {
-            exitCode = code;
-        };
-
-        if (onError) {
-            function wrapWithCallback(fn, includesNewline) {
-                var original = fn;
-                return function (str) {
-                    if (onError(str) !== false) {
-                        original(str);
-                    }
-                };
-            }
-
-            io.stderr.Write = wrapWithCallback(io.stderr.Write);
-            io.stderr.WriteLine = wrapWithCallback(io.stderr.WriteLine);
-        }
-
-        new BatchCompiler(io).batchCompile();
-        return exitCode;
+        return tsc.ts.executeCommandLine(newArgs);
     };
 })();
