@@ -1,0 +1,2 @@
+test/cases/fleet.error.ts(2,42): error TS2304: Cannot find name 'Ship'.
+test/cases/ship.error.ts(1,43): error TS2304: Cannot find name 'booleano'.

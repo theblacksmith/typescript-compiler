@@ -13,44 +13,116 @@ Usage
 
 Require the compiler...
 
-    var tsc = require('typescript-compiler');
+```javascript
+var tsc = require('typescript-compiler');
+```
 
-call it!
+call it like this...
 
-    tsc.compile(['a.ts', 'b.ts'], ['--out', 'out.js'])
+```javascript
+tsc.compile(['a.ts', 'b.ts'], ['--out', 'out.js'])
+```
+    
+or this..
+
+```javascript
+var js = tsc.compileString('class TSC { awesome: boolean = true; }')
+```
+
+or even this!
+
+```javascript
+var result = tsc.compileStrings({
+				'ship.ts' : 'module Navy { export class Ship { isSunk: boolean; } }', 
+				'fleet.ts': '///<reference path="ship.ts" />\n' +
+							'module Navy { \n' +
+							'export class Fleet { ships: Ship[] } '+
+							'}'
+			})
+```
+	
+_Did you notice you can use **///&lt;reference />** tags?_
 
 ## Module Interface
 
-### libdPath
+**Note:** A `?` indicates an optional parameter
 
-The path of `lib.d.ts`
+### Common Parameters
 
-### compile(files, tscArgs, onError)
+All Methods accept the following parameters:
 
-#### files
+> **tscArgs?** : `string[]`|`string`, <br>
+> &nbsp; &nbsp; &nbsp; &nbsp; The same [[arguments you can pass to tsc|Home#tsc-arguments]] when you run it from the command line <br>
+> **options?** : [[<code>CompilerOptions</code>|Interfaces#compileroptions]], <br>
+> &nbsp; &nbsp; &nbsp; &nbsp; Options to be passed to the compiler<br>
+> **onError?** : _fn_ ( [[<code>Diagnostic</code>|Interfaces#diagnostic]] )<br>
+> &nbsp; &nbsp; &nbsp; &nbsp; A function you want called for each error the compiler encounters.
 
-**required** - Type: `array`
-
-A list of files to be compiled.
-
-#### tscArgs
-
-**optional** - Type: `string` or `array` - Default: `[]`
-
-Arguments to be passed to the compiler
-
-- `string`
-    An string containing the arguments as you would use on the terminal but **without the files** to compile.
-    E.g. `"--target ES5"`
-- `array`
-    Each item in the array is a "word" in the command line. Options which receive parameters
-    are split into two elements, i.e., to pass `--target ES5` you need to pass to `compile` an array like this:
-    `['--target', 'ES5']`.
+### Compilation Methods
 
 
-Check the  options for the current version:
+#### `compile(files, tscArgs?, options?, onError?)`
+
+> **input** : `string`|`string[]`<br>
+> &nbsp; &nbsp; &nbsp; &nbsp; The name of the file or an array of file names to compile.<br>
+> **returns** [[<code>CompilationResult</code>|Interfaces#compilationresult]]
+
+&nbsp; &nbsp; &nbsp; &nbsp; _Compiles one or many files_
+
+##### &nbsp; &nbsp; &nbsp; &nbsp; Example
+
+> ```javascript
+>     tsc.compile(['test/cases/ship.ts', 'test/cases/fleet.ts'], 
+>     				'-m commonjs -t ES5 --out test/tmp/navy.js');
+> ```
+				
+
+#### `compileString(input, tscArgs?, options?, onError?)`
+
+> **input** : `Map<string>`|`StringSource[]`|`string[]` <br>
+> &nbsp; &nbsp; &nbsp; &nbsp; The source to compile or an array of sources. The source(s) can be passed as strings or [[<code>StringSource</code>|Interfaces#stringsource]] objects. <br>
+> **returns** `string`
+
+&nbsp; &nbsp; &nbsp; &nbsp; _Compiles a string_
+
+##### &nbsp; &nbsp; &nbsp; &nbsp; Example
+
+> ```javascript
+> tsc.compileString('module Navy { class Ship { isSunk: boolean; } }')
+> ```
+
+#### `compileStrings(input, tscArgs?, options?, onError?)`
+
+> **input** : [[<code>Map&lt;string&gt;</code>|Interfaces#map]]|[[<code>StringSource</code>|Interfaces#stringsource]]|`string[]` <br>
+> &nbsp; &nbsp; A collection of sources to be compiled.<br>
+> **returns** [[<code>CompilationResult</code>|Interfaces#compilationresult]]
+
+&nbsp; &nbsp; &nbsp; &nbsp; Compiles one or many strings
+
+##### &nbsp; &nbsp; &nbsp; &nbsp; Example
+
+> ```javascript
+> tsc.compileStrings({
+>     "ship.ts"  : 'module Navy { export class Ship { isSunk: boolean; }}', 
+>     "fleet.ts": '///<reference path="ship.ts" />\n' +
+>                 'module Navy { export class Fleet { ships: Ship[] }}'
+>    },
+>    // tscArgs
+>    '--module commonjs -t ES5 --out navy.js', 
+>    // options
+>    { fullTypeCheckMode: true },
+>    // onError
+>    function(e) { console.log(e) }
+> )
+> ```
+
+
+#### TSC arguments
+
+When in doubt about what you can pass in the `tscArgs` param you can run the compiler from the command line to get some help. Every option you see below is accepted as a value for the `tscArgs` array.
 
 ```
+$ tsc
 Version 1.1.0.1
 Syntax:   tsc [options] [file ...]
 
@@ -74,14 +146,3 @@ Options:
  -w, --watch        Watch input files.
  @<file>            Insert command line options and files from a file.
 ```
-
-### Example
-
-    tsc.compile(['a.ts', 'b.ts'], "-d -t ES5 --out out.js");
-
-
-Credits
-==========
-
-Initial code created by [iano](https://npmjs.org/~iano)
-which was inspired by [typescript-wrapper](https://npmjs.org/package/typescript-wrapper)

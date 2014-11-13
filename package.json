@@ -1,8 +1,8 @@
 {
   "name": "typescript-compiler",
-  "version": "1.1.0-1",
+  "version": "1.1.0-2",
   "description": "Typescript compiler wrapper",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +14,8 @@
     "TypeScript",
     "compiler",
     "language",
-    "javascript"
+    "javascript",
+    "api"
   ],
   "author": "The Blacksmith (a.k.a. Saulo Vallory)",
   "license": "MIT",
@@ -23,8 +24,9 @@
   },
   "homepage": "https://github.com/theblacksmith/typescript-compiler",
   "dependencies": {
-    "typescript": ">=1.1.0-1",
-    "underscore": "~1"
   },
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "chai": "^1.10.0"
+  }
 }
