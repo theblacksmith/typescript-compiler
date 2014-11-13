@@ -58,6 +58,8 @@ All Methods accept the following parameters:
 > **onError?** : _fn_ ( [`Diagnostic`] )<br>
 > &nbsp; &nbsp; &nbsp; &nbsp; A function you want called for each error the compiler encounters.
 
+### Compilation Methods
+
 #### `compile(files, tscArgs?, options?, onError?)`
 
 > **input** : `string`|`string[]`<br>
@@ -72,7 +74,6 @@ All Methods accept the following parameters:
 >     tsc.compile(['test/cases/ship.ts', 'test/cases/fleet.ts'], 
 >     				'-m commonjs -t ES5 --out test/tmp/navy.js');
 > ```
-				
 
 #### `compileString(input, tscArgs?, options?, onError?)`
 
@@ -145,7 +146,6 @@ Options:
 ```
 
 [`CompilerOptions`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#compileroptions
-### Compilation Methods
 [`Diagnostic`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#diagnostic
 [`CompilationResult`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#compilationresult
 [`StringSource`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#stringsource-class
