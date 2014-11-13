@@ -52,20 +52,17 @@ _Did you notice you can use **///&lt;reference />** tags?_
 All Methods accept the following parameters:
 
 > **tscArgs?** : `string[]`|`string`, <br>
-> &nbsp; &nbsp; &nbsp; &nbsp; The same [[arguments you can pass to tsc|Home#tsc-arguments]] when you run it from the command line <br>
-> **options?** : [[<code>CompilerOptions</code>|Interfaces#compileroptions]], <br>
+> &nbsp; &nbsp; &nbsp; &nbsp; The same [arguments you can pass to tsc](#tsc-arguments) when you run it from the command line <br>
+> **options?** : [`CompilerOptions`], <br>
 > &nbsp; &nbsp; &nbsp; &nbsp; Options to be passed to the compiler<br>
-> **onError?** : _fn_ ( [[<code>Diagnostic</code>|Interfaces#diagnostic]] )<br>
+> **onError?** : _fn_ ( [`Diagnostic`] )<br>
 > &nbsp; &nbsp; &nbsp; &nbsp; A function you want called for each error the compiler encounters.
-
-### Compilation Methods
-
 
 #### `compile(files, tscArgs?, options?, onError?)`
 
 > **input** : `string`|`string[]`<br>
 > &nbsp; &nbsp; &nbsp; &nbsp; The name of the file or an array of file names to compile.<br>
-> **returns** [[<code>CompilationResult</code>|Interfaces#compilationresult]]
+> **returns** [`CompilationResult`]
 
 &nbsp; &nbsp; &nbsp; &nbsp; _Compiles one or many files_
 
@@ -79,8 +76,8 @@ All Methods accept the following parameters:
 
 #### `compileString(input, tscArgs?, options?, onError?)`
 
-> **input** : `Map<string>`|`StringSource[]`|`string[]` <br>
-> &nbsp; &nbsp; &nbsp; &nbsp; The source to compile or an array of sources. The source(s) can be passed as strings or [[<code>StringSource</code>|Interfaces#stringsource]] objects. <br>
+> **input** : [`Map<string>`]|[`StringSource[]`][`StringSource`]|`string[]` <br>
+> &nbsp; &nbsp; &nbsp; &nbsp; The source to compile or an array of sources. The source(s) can be passed as strings or [`StringSource`] objects. <br>
 > **returns** `string`
 
 &nbsp; &nbsp; &nbsp; &nbsp; _Compiles a string_
@@ -93,9 +90,9 @@ All Methods accept the following parameters:
 
 #### `compileStrings(input, tscArgs?, options?, onError?)`
 
-> **input** : [[<code>Map&lt;string&gt;</code>|Interfaces#map]]|[[<code>StringSource</code>|Interfaces#stringsource]]|`string[]` <br>
+> **input** : [`Map<string>`]|[`StringSource`]|`string[]` <br>
 > &nbsp; &nbsp; A collection of sources to be compiled.<br>
-> **returns** [[<code>CompilationResult</code>|Interfaces#compilationresult]]
+> **returns** [`CompilationResult`]
 
 &nbsp; &nbsp; &nbsp; &nbsp; Compiles one or many strings
 
@@ -146,3 +143,10 @@ Options:
  -w, --watch        Watch input files.
  @<file>            Insert command line options and files from a file.
 ```
+
+[`CompilerOptions`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#compileroptions
+### Compilation Methods
+[`Diagnostic`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#diagnostic
+[`CompilationResult`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#compilationresult
+[`StringSource`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#stringsource-class
+[`Map<string>`]: https://github.com/theblacksmith/typescript-compiler/wiki/Interfaces#map
