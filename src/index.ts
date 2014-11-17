@@ -61,16 +61,24 @@ module tsc {
 
 		var program = ts.createProgram(files, commandLine.options, host);
 
-		// Query for early errors
-		var errors = program.getDiagnostics();
+        // Query for early errors
+        var errors = [];
+        if (options.fullTypeCheckMode)
+            errors = program.getDiagnostics();
+
 		// todo: make async
 		forwardErrors(errors, onError);
 
 		// Do not generate code in the presence of early errors
 		if (!errors.length) {
-			// Type check and get semanic errors
 			var checker = program.getTypeChecker(options.fullTypeCheckMode);
-			var semanticErrors = checker.getDiagnostics();
+
+			// Type check and get semantic errors
+            var semanticErrors = [];
+            if (options.fullTypeCheckMode) {				
+                semanticErrors = checker.getDiagnostics();
+            }
+
 			// todo: make async
 			forwardErrors(semanticErrors, onError);
 
