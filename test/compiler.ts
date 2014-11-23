@@ -22,8 +22,8 @@ describe('typescript-compiler', () => {
 		it('should be able to compile many files at once', () => {
 			// tsc -m commonjs -t ES5 test/cases/fleet.error.ts --out test/cases/navy.error.js
 			var expected_output = fs.readFileSync('test/cases/navy.js').toString();
-			
-			var result = tsc.compile(['test/cases/ship.ts', 'test/cases/fleet.ts'], 
+
+			var result = tsc.compile(['test/cases/ship.ts', 'test/cases/fleet.ts'],
 				'-m commonjs -t ES5 --out test/tmp/navy.js');
 
 			expect(result.sources['test/tmp/navy.js']).to.equal(expected_output)
@@ -64,7 +64,7 @@ describe('typescript-compiler', () => {
 			var source = fs.readFileSync('test/cases/constructorOverloads.ts').toString();
 			var expected_errors = fs.readFileSync('test/cases/constructorOverloads.errors')
 										.toString()
-										.replace('test/cases/constructorOverloads', 'string')
+										.replace(/test\/cases\/constructorOverloads/g, 'string')
 										.trim().split('\n');
 
 			var result = tsc.compileString(source, null, null, (e) => {
@@ -84,19 +84,19 @@ describe('typescript-compiler', () => {
 			var result = tsc.compileString('var a : SomeFakeType', null, null, (e) => {
 				errorMsg = e.messageText
 			});
-			expect(errorMsg).to.equal('Cannot find name \'SomeFakeType\'.');	
+			expect(errorMsg).to.equal('Cannot find name \'SomeFakeType\'.');
 		})
 	})
 
 	describe('#compileStrings', () => {
 
 		var sources = {
-			'ship.ts': 'module Navy { export class Ship { isSunk: boolean; } }', 
+			'ship.ts': 'module Navy { export class Ship { isSunk: boolean; } }',
 			'fleet.ts': '///<reference path="ship.ts" />\nmodule Navy { export class Fleet { ships: Ship[] } }'
 		};
 
 		var sources_with_errors = {
-			'test/cases/ship.error.ts': 'module Navy { export class Ship { isSunk: booleano; } }', 
+			'test/cases/ship.error.ts': 'module Navy { export class Ship { isSunk: booleano; } }',
 			'test/cases/fleet.error.ts': '///<reference path="ship.error.ts" />\nmodule Nav { export class Fleet { ships: Ship[] } }'
 		};
 

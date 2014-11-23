@@ -1,1 +1,2 @@
+test/cases/constructorOverloads.ts(2,5): error TS2392: Multiple constructor implementations are not allowed.
 test/cases/constructorOverloads.ts(3,5): error TS2392: Multiple constructor implementations are not allowed.
