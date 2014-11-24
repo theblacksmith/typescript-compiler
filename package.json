@@ -4,7 +4,7 @@
   "description": "Typescript compiler wrapper",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,9 @@
     "url": "https://github.com/theblacksmith/typescript-compiler/issues"
   },
   "homepage": "https://github.com/theblacksmith/typescript-compiler",
-  "dependencies": {
-  },
   "readmeFilename": "README.md",
   "devDependencies": {
-    "chai": "^1.10.0"
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1"
   }
 }
