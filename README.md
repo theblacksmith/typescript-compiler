@@ -22,7 +22,7 @@ call it like this...
 ```javascript
 tsc.compile(['a.ts', 'b.ts'], ['--out', 'out.js'])
 ```
-    
+
 or this..
 
 ```javascript
@@ -33,14 +33,14 @@ or even this!
 
 ```javascript
 var result = tsc.compileStrings({
-				'ship.ts' : 'module Navy { export class Ship { isSunk: boolean; } }', 
+				'ship.ts' : 'module Navy { export class Ship { isSunk: boolean; } }',
 				'fleet.ts': '///<reference path="ship.ts" />\n' +
 							'module Navy { \n' +
 							'export class Fleet { ships: Ship[] } '+
 							'}'
 			})
 ```
-	
+
 _Did you notice you can use **///&lt;reference />** tags?_
 
 ## Module Interface
@@ -71,7 +71,7 @@ All Methods accept the following parameters:
 ##### &nbsp; &nbsp; &nbsp; &nbsp; Example
 
 > ```javascript
->     tsc.compile(['test/cases/ship.ts', 'test/cases/fleet.ts'], 
+>     tsc.compile(['test/cases/ship.ts', 'test/cases/fleet.ts'],
 >     				'-m commonjs -t ES5 --out test/tmp/navy.js');
 > ```
 
@@ -101,14 +101,14 @@ All Methods accept the following parameters:
 
 > ```javascript
 > tsc.compileStrings({
->     "ship.ts"  : 'module Navy { export class Ship { isSunk: boolean; }}', 
+>     "ship.ts"  : 'module Navy { export class Ship { isSunk: boolean; }}',
 >     "fleet.ts": '///<reference path="ship.ts" />\n' +
 >                 'module Navy { export class Fleet { ships: Ship[] }}'
 >    },
 >    // tscArgs
->    '--module commonjs -t ES5 --out navy.js', 
->    // options
->    { fullTypeCheckMode: true },
+>    '--module commonjs -t ES5 --out navy.js',
+>    // options (DEPRECATED, will be removed in the next version)
+>    null,
 >    // onError
 >    function(e) { console.log(e) }
 > )
