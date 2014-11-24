@@ -1,5 +1,10 @@
 /// <reference path="typescript/src/compiler/types.ts"/>
 
+// currently unable to require node.d.ts due to conflicting declarations
+// in typescript/src/compiler/sys.ts
+declare var __dirname;
+declare var __filename;
+
 module tsc {
 
 	export enum SourceType { File, String }

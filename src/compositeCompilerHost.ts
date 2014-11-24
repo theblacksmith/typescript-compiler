@@ -66,7 +66,7 @@ module tsc {
 		useCaseSensitiveFileNames(): boolean {
 			return sys.useCaseSensitiveFileNames;
 		}
-		
+
 		// Implementing CompilerHost interface
 		getCurrentDirectory(): string {
 			if(this.getSourceFile === this._readFromStrings)
@@ -77,7 +77,7 @@ module tsc {
 
 		// Implementing CompilerHost interface
 		getDefaultLibFilename(): string {
-			return path.join(path.dirname(require.resolve('typescript-compiler')), "lib/lib.d.ts");
+			return path.join(__dirname, "lib", "lib.d.ts");
 		}
 
 		// Implementing CompilerHost interface
@@ -152,10 +152,10 @@ module tsc {
 		//////////////////////////////
 
 		private _readFromStrings(filename: string, languageVersion: ts.ScriptTarget, onError?: (message: string) => void): ts.SourceFile {
-			
-			if (filename === this.getDefaultLibFilename()) 
+
+			if (filename === this.getDefaultLibFilename())
 				return this._readFromFile(filename, languageVersion, onError);
-			
+
 			if (this._sources[filename])
 				return ts.createSourceFile(filename, this._sources[filename], languageVersion, /*version:*/ "0");
 
@@ -165,7 +165,7 @@ module tsc {
 			return undefined;
 		}
 
-		private _writeToString(filename: string, data: string, writeByteOrderMark: boolean, onError?: (message: string) => void) { 
+		private _writeToString(filename: string, data: string, writeByteOrderMark: boolean, onError?: (message: string) => void) {
 
 			this._outputs[filename] = data;
 
@@ -181,7 +181,7 @@ module tsc {
 				if (onError) {
 					onError(e.message);
 				}
-				
+
 				text = "";
 			}
 			return text !== undefined ? ts.createSourceFile(filename, text, languageVersion, /*version:*/ "0") : undefined;
