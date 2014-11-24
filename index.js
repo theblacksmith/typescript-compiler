@@ -17101,9 +17101,6 @@ var tsc;
 /// <reference path="compositeCompilerHost.ts"/>
 var tsc;
 (function (tsc) {
-    tsc.defaultCompilerOptions = {
-        fullTypeCheckMode: true
-    };
     function formatError(diagnostic) {
         var output = "";
         if (diagnostic.file) {
@@ -17123,7 +17120,6 @@ var tsc;
         }
     }
     function _compile(host, sources, tscArgs, options, onError) {
-        options = options || tsc.defaultCompilerOptions;
         if (typeof tscArgs == "string")
             tscArgs = tscArgs.split(' ');
         else
@@ -17145,7 +17141,7 @@ var tsc;
         // Do not generate code in the presence of early errors
         if (!errors.length) {
             // Type check and get semanic errors
-            var checker = program.getTypeChecker(options.fullTypeCheckMode);
+            var checker = program.getTypeChecker(true);
             var semanticErrors = checker.getDiagnostics();
             // todo: make async
             forwardErrors(semanticErrors, onError);

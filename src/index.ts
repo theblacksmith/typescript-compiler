@@ -13,10 +13,6 @@
 
 module tsc {
 
-	export var defaultCompilerOptions = {
-		fullTypeCheckMode: true
-	}
-
 	function formatError(diagnostic: ts.Diagnostic) {
 		var output = "";
 		if (diagnostic.file) {
@@ -40,8 +36,6 @@ module tsc {
 	function _compile(host: CompositeCompilerHost, sources: Source[], tscArgs: string, options?: CompilerOptions, onError?: (message) => void)
 	function _compile(host: CompositeCompilerHost, sources: Source[], tscArgs: string[], options?: CompilerOptions, onError?: (message) => void)
 	function _compile(host: CompositeCompilerHost, sources: Source[], tscArgs?, options?: CompilerOptions, onError?: (message) => void) : CompilationResult {
-
-		options = options || defaultCompilerOptions;
 
 		if(typeof tscArgs == "string")
 			tscArgs = tscArgs.split(' ');
@@ -69,7 +63,7 @@ module tsc {
 		// Do not generate code in the presence of early errors
 		if (!errors.length) {
 			// Type check and get semanic errors
-			var checker = program.getTypeChecker(options.fullTypeCheckMode);
+			var checker = program.getTypeChecker(/*fullTypeCheckMode*/ true);
 			var semanticErrors = checker.getDiagnostics();
 			// todo: make async
 			forwardErrors(semanticErrors, onError);
@@ -107,7 +101,7 @@ module tsc {
 			files = [files];
 
 		return _compile(new CompositeCompilerHost(),
-							ts.map(<string[]>files, (f) => new FileSource(f)), 
+							ts.map(<string[]>files, (f) => new FileSource(f)),
 							tscArgs, options, onError);
 	}
 
@@ -118,7 +112,7 @@ module tsc {
 	export function compileStrings(input: string[], tscArgs?: string, options?: CompilerOptions, onError?: (message) => void)
 	export function compileStrings(input: string[], tscArgs?: string[], options?: CompilerOptions, onError?: (message) => void)
 	export function compileStrings(input, tscArgs?, options?: CompilerOptions, onError?: (message) => void): CompilationResult {
-		
+
 		var host = new CompositeCompilerHost()
 							.readFromStrings()
 							.writeToString();

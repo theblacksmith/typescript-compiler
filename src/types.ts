@@ -46,7 +46,6 @@ module tsc {
 	}
 
 	export interface CompilerOptions {
-		fullTypeCheckMode?: boolean;
 	}
 
 	export interface ISourceReaderFn {
