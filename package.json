@@ -4,7 +4,8 @@
   "description": "Typescript compiler wrapper",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "build": "make build",
+    "test": "node ./src/typescript/bin/tsc.js -m commonjs -t ES5 test/*.ts && ./node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",

@@ -16113,7 +16113,7 @@ var tsc;
         };
         // Implementing CompilerHost interface
         CompositeCompilerHost.prototype.getDefaultLibFilename = function () {
-            return path.join(path.dirname(require.resolve('typescript-compiler')), "lib/lib.d.ts");
+            return path.join(__dirname, "lib", "lib.d.ts");
         };
         // Implementing CompilerHost interface
         CompositeCompilerHost.prototype.getCanonicalFileName = function (fileName) {
