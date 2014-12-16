@@ -16,7 +16,7 @@ describe('typescript-compiler', () => {
 			var expected = fs.readFileSync('test/cases/2dArrays.js').toString();
 			var result = tsc.compile('test/cases/2dArrays.ts', '--out test/tmp/2dArrays.js');
 
-			expect(result.sources['test/tmp/2dArrays.js']).to.equal(expected);
+			expect(result.sources['test/tmp/2dArrays.js'].split(/[\r\n]+/)).to.deep.equal(expected.split(/[\r\n]+/));
 		})
 
 		it('should be able to compile many files at once', () => {
@@ -26,7 +26,7 @@ describe('typescript-compiler', () => {
 			var result = tsc.compile(['test/cases/ship.ts', 'test/cases/fleet.ts'],
 				'-m commonjs -t ES5 --out test/tmp/navy.js');
 
-			expect(result.sources['test/tmp/navy.js']).to.equal(expected_output)
+			expect(result.sources['test/tmp/navy.js'].split(/[\r\n]+/)).to.deep.equal(expected_output.split(/[\r\n]+/))
 			expect(result.errors.length).to.equal(0)
 		})
 
@@ -35,7 +35,7 @@ describe('typescript-compiler', () => {
 			var expected_errors = fs.readFileSync('test/cases/constructorOverloads.errors').toString().trim().split('\n');
 			var result = tsc.compile('test/cases/constructorOverloads.ts');
 
-			expect(result.sources['test/cases/constructorOverloads.js']).to.equal(expected_output)
+			expect(result.sources['test/cases/constructorOverloads.js'].split(/[\r\n]+/)).to.deep.equal(expected_output.split(/[\r\n]+/))
 			expect(result.errors.length).to.be.equal(expected_errors.length)
 			expect(result.errors[0].trim()).to.be.equal(expected_errors[0].trim())
 		})
@@ -56,7 +56,7 @@ describe('typescript-compiler', () => {
 			var expected = fs.readFileSync('test/cases/2dArrays.js').toString();
 			var result = tsc.compileString(source);
 
-			expect(result).to.equal(expected);
+			expect(result.split(/[\r\n]+/)).to.deep.equal(expected.split(/[\r\n]+/));
 		})
 
 		it('should return errors exactly like tsc', () => {
@@ -104,8 +104,8 @@ describe('typescript-compiler', () => {
 			var result = tsc.compileStrings(sources, '-m commonjs -t ES5 --out navy.js')
 			// tsc -m commonjs -t ES5 test/cases/fleet.ts --out test/cases/navy.js
 			var expected_result = fs.readFileSync('test/cases/navy.js').toString();
-
-			expect(result.sources['navy.js']).to.equal(expected_result);
+		
+			expect(result.sources['navy.js'].split(/[\r\n]+/)).to.deep.equal(expected_result.split(/[\r\n]+/));
 		})
 
 		it('should return errors exactly like tsc', () => {
@@ -114,7 +114,7 @@ describe('typescript-compiler', () => {
 			var expected_errors = fs.readFileSync('test/cases/navy.errors').toString().trim().split('\n');
 			var result = tsc.compileStrings(sources_with_errors, '-m commonjs -t ES5 --out navy.js');
 
-			expect(result.sources['navy.js']).to.equal(expected_output)
+			expect(result.sources['navy.js'].split(/[\r\n]+/)).to.deep.equal(expected_output.split(/[\r\n]+/))
 			expect(result.errors.length).to.be.equal(expected_errors.length)
 			expect(result.errors[0].trim()).to.be.equal(expected_errors[0].trim())
 		})
