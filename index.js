@@ -17025,7 +17025,7 @@ var tsc;
         // private methods
         //////////////////////////////
         CompositeCompilerHost.prototype._readFromStrings = function (filename, languageVersion, onError) {
-            if (filename === this.getDefaultLibFilename())
+            if (path.normalize(filename) === this.getDefaultLibFilename())
                 return this._readFromFile(filename, languageVersion, onError);
             if (this._sources[filename])
                 return ts.createSourceFile(filename, this._sources[filename], languageVersion, "0");
@@ -17040,7 +17040,7 @@ var tsc;
         };
         CompositeCompilerHost.prototype._readFromFile = function (filename, languageVersion, onError) {
             try {
-                var text = sys.readFile(filename);
+                var text = sys.readFile(path.normalize(filename));
             }
             catch (e) {
                 if (onError) {

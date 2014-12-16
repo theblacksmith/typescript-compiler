@@ -153,7 +153,7 @@ module tsc {
 		if(input == '') return '';
 
 		var result: string = '';
-
+		
 		var host = new CompositeCompilerHost()
 							.readFromStrings()
 							.writeToString()
