@@ -1,6 +1,6 @@
 {
   "name": "typescript-compiler",
-  "version": "1.3.0",
+  "version": "1.3.0-1",
   "description": "Typescript compiler wrapper",
   "main": "index.js",
   "scripts": {
