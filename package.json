@@ -28,6 +28,6 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "mocha": "^2.0.1",
-    "typescript-require": "~0.2.6"
+    "typescript-require": ">=0.2.7"
   }
 }
