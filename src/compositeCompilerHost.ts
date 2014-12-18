@@ -152,8 +152,8 @@ module tsc {
 		//////////////////////////////
 
 		private _readFromStrings(filename: string, languageVersion: ts.ScriptTarget, onError?: (message: string) => void): ts.SourceFile {
-
-			if (filename === this.getDefaultLibFilename())
+			
+			if (path.normalize(filename) === this.getDefaultLibFilename())
 				return this._readFromFile(filename, languageVersion, onError);
 
 			if (this._sources[filename])
@@ -175,7 +175,7 @@ module tsc {
 
 		private _readFromFile(filename: string, languageVersion: ts.ScriptTarget, onError?: (message: string) => void): ts.SourceFile {
 			try {
-				var text = sys.readFile(filename);
+				var text = sys.readFile(path.normalize(filename));
 			}
 			catch (e) {
 				if (onError) {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "make build",
-    "test": "node ./src/typescript/bin/tsc.js -m commonjs -t ES5 test/*.ts && ./node_modules/mocha/bin/mocha"
+    "test": "node src/typescript/bin/tsc.js -m commonjs -t ES5 src/index.ts --out index.js && mocha --compilers ts:typescript-require"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "chai": "^1.10.0",
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "typescript-require": ">=0.2.7"
   }
 }
