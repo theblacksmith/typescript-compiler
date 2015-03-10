@@ -20198,7 +20198,7 @@ var tsc;
         return clone;
     }
     var CompositeCompilerHost = (function () {
-        function CompositeCompilerHost() {
+        function CompositeCompilerHost(options) {
             this._sources = {};
             this._outputs = {};
             /**
@@ -20213,6 +20213,8 @@ var tsc;
             this.getSourceFile = this._readFromFile;
             this.writesTo = 0 /* File */;
             this.writeFile = this._writeToFile;
+            this.options = options || {};
+            this.options.defaultLibFilename = this.options.defaultLibFilename || '';
         }
         Object.defineProperty(CompositeCompilerHost.prototype, "sources", {
             get: function () {
@@ -20240,7 +20242,7 @@ var tsc;
         };
         // Implementing CompilerHost interface
         CompositeCompilerHost.prototype.getDefaultLibFilename = function () {
-            return path.join(__dirname, "lib", "lib.d.ts");
+            return this.options.defaultLibFilename || path.join(__dirname, "lib", "lib.d.ts");
         };
         // Implementing CompilerHost interface
         CompositeCompilerHost.prototype.getCanonicalFileName = function (fileName) {
@@ -20438,11 +20440,11 @@ var tsc;
     function compile(files, tscArgs, options, onError) {
         if (typeof files == 'string')
             files = [files];
-        return _compile(new tsc.CompositeCompilerHost(), ts.map(files, function (f) { return new tsc.FileSource(f); }), tscArgs, options, onError);
+        return _compile(new tsc.CompositeCompilerHost(options), ts.map(files, function (f) { return new tsc.FileSource(f); }), tscArgs, options, onError);
     }
     tsc.compile = compile;
     function compileStrings(input, tscArgs, options, onError) {
-        var host = new tsc.CompositeCompilerHost().readFromStrings().writeToString();
+        var host = new tsc.CompositeCompilerHost(options).readFromStrings().writeToString();
         var sources = [];
         if (Array.isArray(input) && input.length) {
             // string[]
@@ -20471,7 +20473,7 @@ var tsc;
         if (input == '')
             return '';
         var result = '';
-        var host = new tsc.CompositeCompilerHost().readFromStrings().writeToString().redirectOutput(function (filename, data) { return result += data; });
+        var host = new tsc.CompositeCompilerHost(options).readFromStrings().writeToString().redirectOutput(function (filename, data) { return result += data; });
         _compile(host, [input instanceof tsc.StringSource ? input : new tsc.StringSource(input, 'string.ts')], tscArgs, options, onError);
         return result;
     }

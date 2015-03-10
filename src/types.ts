@@ -42,6 +42,7 @@ module tsc {
 	}
 
 	export interface CompilerOptions {
+		defaultLibFilename?: string;
 	}
 
 	export interface ISourceReaderFn {

@@ -100,7 +100,7 @@ module tsc {
 		if(typeof files == 'string')
 			files = [files];
 
-		return _compile(new CompositeCompilerHost(),
+		return _compile(new CompositeCompilerHost(options),
 							ts.map(<string[]>files, (f) => new FileSource(f)),
 							tscArgs, options, onError);
 	}
@@ -113,7 +113,7 @@ module tsc {
 	export function compileStrings(input: string[], tscArgs?: string[], options?: CompilerOptions, onError?: (message) => void)
 	export function compileStrings(input, tscArgs?, options?: CompilerOptions, onError?: (message) => void): CompilationResult {
 
-		var host = new CompositeCompilerHost()
+		var host = new CompositeCompilerHost(options)
 							.readFromStrings()
 							.writeToString();
 
@@ -154,7 +154,7 @@ module tsc {
 
 		var result: string = '';
 
-		var host = new CompositeCompilerHost()
+		var host = new CompositeCompilerHost(options)
 							.readFromStrings()
 							.writeToString()
 							.redirectOutput((filename, data) => result += data);

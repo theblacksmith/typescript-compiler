@@ -28,6 +28,7 @@ module tsc {
 		private _writer: IResultWriterFn;
 		private _sources: ts.Map<string> = {};
 		private _outputs: ts.Map<string> = {};
+		public options: CompilerOptions;
 
 		/**
 		 * Whether to search for files if a string source isn't found or not
@@ -45,12 +46,15 @@ module tsc {
 		readsFrom: SourceType = SourceType.File;
 		writesTo: SourceType = SourceType.File;
 
-		constructor() {
+		constructor(options : CompilerOptions) {
 			this.readsFrom = SourceType.File;
 			this.getSourceFile = this._readFromFile;
 
 			this.writesTo = SourceType.File;
 			this.writeFile = this._writeToFile;
+
+			this.options = options || {};
+			this.options.defaultLibFilename = this.options.defaultLibFilename || '';
 		}
 
 		// Implementing CompilerHost interface
@@ -77,7 +81,7 @@ module tsc {
 
 		// Implementing CompilerHost interface
 		getDefaultLibFilename(): string {
-			return path.join(__dirname, "lib", "lib.d.ts");
+			return this.options.defaultLibFilename || path.join(__dirname, "lib", "lib.d.ts");
 		}
 
 		// Implementing CompilerHost interface
