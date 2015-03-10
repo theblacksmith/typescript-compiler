@@ -3,6 +3,8 @@ typescript-compiler
 
 Typescript compiler wrapper. Exposes the TypeScript command line compiler to your code.
 
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=theblacksmith&url=https%3A%2F%2Fgithub.com%2Ftheblacksmith%2Ftypescript-compiler)
+
 Installing
 -----------------------
 
