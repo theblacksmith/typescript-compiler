@@ -20,7 +20,7 @@ module tsc {
 			output += diagnostic.file.filename + "(" + loc.line + "," + loc.character + "): ";
 		}
 		var category = ts.DiagnosticCategory[diagnostic.category].toLowerCase();
-		output += category + " TS" + diagnostic.code + ": " + diagnostic.messageText + sys.newLine;
+		output += category + " TS" + diagnostic.code + ": " + diagnostic.messageText + ts.sys.newLine;
 		return output;
 	}
 
@@ -71,9 +71,9 @@ module tsc {
 			// Generate output
 			var emitResult = checker.emitFiles();
 			// todo: make async
-			forwardErrors(emitResult.errors, onError);
+			forwardErrors(emitResult.diagnostics, onError);
 
-			errors = ts.concatenate(semanticErrors, emitResult.errors);
+			errors = ts.concatenate(semanticErrors, emitResult.diagnostics);
 		}
 
 		return {
@@ -153,7 +153,7 @@ module tsc {
 		if(input == '') return '';
 
 		var result: string = '';
-		
+
 		var host = new CompositeCompilerHost()
 							.readFromStrings()
 							.writeToString()

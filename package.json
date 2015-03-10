@@ -1,11 +1,11 @@
 {
   "name": "typescript-compiler",
-  "version": "1.3.0-1",
+  "version": "1.4.1",
   "description": "Typescript compiler wrapper",
   "main": "index.js",
   "scripts": {
     "build": "make build",
-    "test": "node src/typescript/bin/tsc.js -m commonjs -t ES5 src/index.ts --out index.js && mocha --compilers ts:typescript-require"
+    "test": "make build && mocha --compilers ts:typescript-require"
   },
   "repository": {
     "type": "git",

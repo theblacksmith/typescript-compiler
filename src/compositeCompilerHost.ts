@@ -60,19 +60,19 @@ module tsc {
 		writeFile: IResultWriterFn;
 
 		// Implementing CompilerHost interface
-		getNewLine = (): string => sys.newLine;
+		getNewLine = (): string => ts.sys.newLine;
 
 		// Implementing CompilerHost interface
 		useCaseSensitiveFileNames(): boolean {
-			return sys.useCaseSensitiveFileNames;
+			return ts.sys.useCaseSensitiveFileNames;
 		}
 
 		// Implementing CompilerHost interface
 		getCurrentDirectory(): string {
 			if(this.getSourceFile === this._readFromStrings)
-				return undefined;
+				return '';
 
-			return this._currentDirectory || (this._currentDirectory = sys.getCurrentDirectory());
+			return this._currentDirectory || (this._currentDirectory = ts.sys.getCurrentDirectory());
 		}
 
 		// Implementing CompilerHost interface
@@ -84,7 +84,7 @@ module tsc {
 		getCanonicalFileName(fileName: string): string {
 			// if underlying system can distinguish between two files whose names differs only in cases then file name already in canonical form.
 			// otherwise use toLowerCase as a canonical form.
-			return sys.useCaseSensitiveFileNames ? fileName : fileName.toLowerCase();
+			return ts.sys.useCaseSensitiveFileNames ? fileName : fileName.toLowerCase();
 		}
 
 		readFromStrings(fallbackToFiles: boolean = false): CompositeCompilerHost {
@@ -152,7 +152,7 @@ module tsc {
 		//////////////////////////////
 
 		private _readFromStrings(filename: string, languageVersion: ts.ScriptTarget, onError?: (message: string) => void): ts.SourceFile {
-			
+
 			if (path.normalize(filename) === this.getDefaultLibFilename())
 				return this._readFromFile(filename, languageVersion, onError);
 
@@ -175,7 +175,7 @@ module tsc {
 
 		private _readFromFile(filename: string, languageVersion: ts.ScriptTarget, onError?: (message: string) => void): ts.SourceFile {
 			try {
-				var text = sys.readFile(path.normalize(filename));
+				var text = ts.sys.readFile(path.normalize(filename));
 			}
 			catch (e) {
 				if (onError) {
@@ -194,7 +194,7 @@ module tsc {
 				if (ts.hasProperty(existingDirectories, directoryPath)) {
 					return true;
 				}
-				if (sys.directoryExists(directoryPath)) {
+				if (ts.sys.directoryExists(directoryPath)) {
 					existingDirectories[directoryPath] = true;
 					return true;
 				}
@@ -205,7 +205,7 @@ module tsc {
 				if (directoryPath.length > ts.getRootLength(directoryPath) && !directoryExists(directoryPath)) {
 					var parentDirectory = ts.getDirectoryPath(directoryPath);
 					ensureDirectoriesExist(parentDirectory);
-					sys.createDirectory(directoryPath);
+					ts.sys.createDirectory(directoryPath);
 				}
 			}
 
@@ -215,7 +215,7 @@ module tsc {
 				}
 				else {
 					ensureDirectoriesExist(ts.getDirectoryPath(ts.normalizePath(fileName)));
-					sys.writeFile(fileName, data, writeByteOrderMark);
+					ts.sys.writeFile(fileName, data, writeByteOrderMark);
 				}
 				this._outputs[fileName] = (writeByteOrderMark ? '\uFEFF' : '') + data;
 			}
