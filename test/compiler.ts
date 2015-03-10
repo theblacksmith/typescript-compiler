@@ -10,6 +10,15 @@ var tsc = require('..');
 
 describe('typescript-compiler', () => {
 
+	it('Should parse args from a file', () => {
+		var error;
+		var result = tsc.compileString(
+			'export class ArgTest { public worked : boolean = true; }',
+			'@test/args/commonjs.txt', null, (e) => error = e.formattedMessage);
+
+		expect(error).to.be.empty(error);
+	});
+
 	describe('#compile', () => {
 
 		it('should generate the same output tsc does', () => {

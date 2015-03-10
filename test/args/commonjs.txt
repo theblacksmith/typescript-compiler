@@ -1,0 +1,1 @@
+-t es5 -m commonjs
