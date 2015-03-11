@@ -50,7 +50,7 @@ module tsc {
 			files = host.getSourcesFilenames();
 		}
 		else {
-			files = ts.map(sources, s => s.filename);
+			files = ts.map(sources, s => s.filename).concat(commandLine.filenames);
 		}
 
 		var program = ts.createProgram(files, commandLine.options, host);

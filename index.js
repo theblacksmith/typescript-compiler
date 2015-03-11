@@ -20405,7 +20405,7 @@ var tsc;
             files = host.getSourcesFilenames();
         }
         else {
-            files = ts.map(sources, function (s) { return s.filename; });
+            files = ts.map(sources, function (s) { return s.filename; }).concat(commandLine.filenames);
         }
         var program = ts.createProgram(files, commandLine.options, host);
         // Query for early errors

@@ -1,0 +1,1 @@
+test/cases/2dArrays.ts -t es5 -m commonjs --out test/tmp/2dArrays.js

@@ -10,15 +10,27 @@ var tsc = require('..');
 
 describe('typescript-compiler', () => {
 
-	it('Should parse args from a file', () => {
-		var error;
-		var result = tsc.compileString(
-			'export class ArgTest { public worked : boolean = true; }',
-			'@test/args/commonjs.txt', null, (e) => error = e.formattedMessage);
+	describe('@<file> argument support', () => {
+		it('Should parse args from a file', () => {
+			var error;
+			var result = tsc.compileString(
+				'export class ArgTest { public worked : boolean = true; }',
+				'@test/args/commonjs.txt', null, (e) => error = e.formattedMessage);
 
-		expect(error).to.be.empty(error);
-	});
+			expect(error).to.be.empty(error);
+		});
 
+		it('Should parse files inside an args file', () => {
+			var error;
+			var expected = fs.readFileSync('test/cases/2dArrays.js').toString();
+
+			var result = tsc.compile([], '@test/args/with-files.txt', null, (e) => error = e.formattedMessage);
+
+			expect(error).to.be.empty(error);
+			expect(result.sources['test/tmp/2dArrays.js'].split(/[\r\n]+/)).to.deep.equal(expected.split(/[\r\n]+/));
+		});
+	})
+	
 	describe('#compile', () => {
 
 		it('should generate the same output tsc does', () => {
@@ -113,7 +125,7 @@ describe('typescript-compiler', () => {
 			var result = tsc.compileStrings(sources, '-m commonjs -t ES5 --out navy.js')
 			// tsc -m commonjs -t ES5 test/cases/fleet.ts --out test/cases/navy.js
 			var expected_result = fs.readFileSync('test/cases/navy.js').toString();
-		
+
 			expect(result.sources['navy.js'].split(/[\r\n]+/)).to.deep.equal(expected_result.split(/[\r\n]+/));
 		})
 
